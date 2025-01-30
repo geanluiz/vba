@@ -117,6 +117,12 @@ Sub CallUserForm()
     
 End Sub
 
+Sub CallUserForm2()
+
+    UserForm2.Show
+    
+End Sub
+
 Sub ExcluirLinha()
 
     Call DesbloquearPlanilha
@@ -246,5 +252,4 @@ Sub MenuClick()
     Call BloquearPlanilha
 
 End Sub
-
 

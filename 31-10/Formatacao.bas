@@ -13,8 +13,11 @@ Dim profS As Single
 Dim profI As Single
 Dim medSup As String
 Dim medInf As String
+Dim qtPInf As Integer
+Dim pluralPortas As String
+Dim trechoPortas As String
 
-Function desc_text(largS, largI, altS, altI, profS, profI, cor, moldRpdAplq) As String
+Function desc_text(largS, largI, altS, altI, profS, profI, cor, moldRpdAplq, qtPInf) As String
 
     If moldRpdAplq = "mold" Then
         mold = " com moldura"
@@ -27,11 +30,20 @@ Function desc_text(largS, largI, altS, altI, profS, profI, cor, moldRpdAplq) As 
     medSup = (largS * 100) & "x" & (altS * 100) & "x" & (profS * 100)
     medInf = (largI * 100) & "x" & (altI * 100) & "x" & (profI * 100)
 
+    If qtPInf > 1 Then 
+        trechoPortas = "com " & qtPInf & " portas" 
+    ElseIf qtPInf = 0 Then
+        trechoPortas = "sem portas"
+    ElseIf qtPInf = 1 Then
+        trechoPortas = "com 1 porta"
+    End If
+
+
     desc_text = _
     "BANHEIRO: Armário suspenso a prova dagua pintado na cor " & _
     cor & " med. " & medSup & "cm com 1 porta, molduras, espelho e" & _
     " ferragens em inox e; Balcão a prova dagua pintado na cor " & _
-    cor & " med. " & medInf & "cm com 2 portas" & _
+    cor & " med. " & medInf & "cm " & trechoPortas & _
     mold & " e ferragens em inox."
 
 End Function
@@ -158,3 +170,5 @@ Sub FormatarTotais()
     Call BloquearPlanilha
 
 End Sub
+
+

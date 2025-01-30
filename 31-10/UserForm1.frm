@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm1 
    Caption         =   "Inserir M�dulo"
-   ClientHeight    =   3930
+   ClientHeight    =   6735
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   5160
+   ClientWidth     =   5040
    OleObjectBlob   =   "UserForm1.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -34,10 +34,10 @@ Private Sub btn_cor_padrao_Click()
         
     If btn_cor_padrao.Value = True Then
         Text_cor.Value = cor
-        Text_cor.ForeColor = &H80000010&
+        Text_cor.ForeColor = &H80000010
         Text_cor.Locked = True
     Else
-        Text_cor.ForeColor = &H80000012&
+        Text_cor.ForeColor = &H80000012
         Text_cor.Locked = False
     End If
     
@@ -55,19 +55,19 @@ Private Sub medida_padrao()
 
         Call set_medidas
 
-        For tb = LBound(textBoxes) to UBound(textBoxes)
+        For tb = LBound(textBoxes) To UBound(textBoxes)
             textBoxes(tb).Locked = True
-            textBoxes(tb).ForeColor = &H80000010&
-        Next tb        
+            textBoxes(tb).ForeColor = &H80000010
+        Next tb
 
         btn_prof50.Visible = True
         btn_prof40.Visible = True
         TextPInf.Visible = False
     Else
 
-        For tb = LBound(textBoxes) to UBound(textBoxes)
+        For tb = LBound(textBoxes) To UBound(textBoxes)
             textBoxes(tb).Locked = False
-            textBoxes(tb).ForeColor = &H80000012&
+            textBoxes(tb).ForeColor = &H80000012
         Next tb
 
         btn_prof50.Visible = False
@@ -116,6 +116,7 @@ Private Sub btn_ok_Click()
     Dim mold As String
     Dim Valor As Single
     Dim cor As String
+    Dim qtPInf As Integer
     
     modelo = ComboBox_modelo.Value
 
@@ -125,7 +126,8 @@ Private Sub btn_ok_Click()
     aInf = TextAInf.Value
     pSup = TextPSup.Value
 
-    If btn_medida_padrao.Value = False Then 
+
+    If btn_medida_padrao.Value = False Then
         pInf = TextPInf.Value
     Else
         If btn_prof50.Value = True Then
@@ -135,6 +137,7 @@ Private Sub btn_ok_Click()
         End If
     End If
 
+
     If porta_aplq.Value = True Then
         mold = "aplq"
     ElseIf porta_mold.Value = True Then
@@ -143,12 +146,13 @@ Private Sub btn_ok_Click()
         mold = "rpd"
     End If
     
-    'qtPortas = InputBox("")
+
+    qtPInf = qtdePortas.Value
     
-    Valor = WorksheetFunction.Ceiling(vBanheiros(modelo, lSup, lInf, aSup, aInf, pSup, pInf, mold), 5)
+    Valor = WorksheetFunction.Ceiling(vBanheiros(modelo, lSup, lInf, aSup, aInf, pSup, pInf, mold, qtPInf), 5)
     cor = Text_cor.Value
 
-    Call InserirLinha(desc_text(lSup, lInf, aSup, aInf, pSup, pInf, cor, mold), Valor)
+    Call InserirLinha(desc_text(lSup, lInf, aSup, aInf, pSup, pInf, cor, mold, qtPInf), Valor)
 
     Unload Me
 
@@ -187,13 +191,15 @@ Private Sub UserForm_Initialize()
     ComboBox_modelo.List = modelos
     ComboBox_modelo.ListIndex = 0
 
-    Text_cor.ForeColor = &H80000010&
+    Text_cor.ForeColor = &H80000010
 
     Call set_medidas
         
     TextPInf.Visible = False
 
     Call medida_padrao
+
+    qtdePortas.Value = 2
 
 End Sub
 
@@ -202,5 +208,4 @@ Private Sub ComboBox_modelo_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVa
         btn_ok_Click
     End If
 End Sub
-
 

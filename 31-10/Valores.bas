@@ -35,6 +35,7 @@ Dim altI As Single
 Dim profS As Single
 Dim profI As Single
 Dim mold As String
+Dim qtPInf As Integer
 
 
 'valor dos materiais
@@ -147,6 +148,9 @@ Function vCxInf(iLarg, iAlt, iProf, qtLatI, qtRipaF) As Single
     Dim m2Laca As Single
     Dim lacaInf As Single
     Dim iAcess As Single
+    Dim qtPes As Integer
+    Dim qtRipaProf As Integer
+
     
     'calcula m2 da caixa
     iLats = qtLatI * iAlt * iProf
@@ -154,11 +158,11 @@ Function vCxInf(iLarg, iAlt, iProf, qtLatI, qtRipaF) As Single
     iFundo = QTFUNDO * iLarg * iAlt
     iPrats = QTPRAT * iLarg * iProf
     iRipaF = qtRipaF * LARGRIPAF * iAlt
-    If iLarg > 0.8 Then
-        iRipaE = ((iAlt * 4) + (iLarg * 3) + (iProf * 3)) * LARGRIPAE
-    Else
-        iRipaE = ((iAlt * 4) + (iLarg * 3) + (iProf * 2)) * LARGRIPAE
-    End If
+
+    
+    If iLarg > 0.8 Then qtRipaProf = 3 Else qtRipaProf = 2
+    iRipaE = ((iAlt * 4) + (iLarg * 3) + (iProf * qtRipaProf)) * LARGRIPAE
+
     iRod = 2 * (iLarg + iProf) * LARGRIPAE
 
 
@@ -176,11 +180,9 @@ Function vCxInf(iLarg, iAlt, iProf, qtLatI, qtRipaF) As Single
 
 
     'calcula acessorios
-    If iLarg > 0.8 Then
-        iAcess = vMaterial("pe") * 6 * markup(2)
-    Else
-        iAcess = vMaterial("pe") * 4 * markup(2)
-    End If
+    If iLarg > 0.8 Then qtPes = 6 Else qtPes = 4
+
+    iAcess = vMaterial("pe") * qtPes * markup(2)
 
     vCxInf = Round(finalCxInf + lacaInf + iAcess, 2)
 
@@ -375,21 +377,19 @@ Function vGaveta(largG, moldRpdAplq, profG) As Single
 End Function
     
 'retorna valor total dos banheiros
-Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold) As Single
+Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold, qtPInf) As Single
 
     Const largP1Sup As Single = 0.48
     Const largP1Inf As Single = 0.33
     Const largP2Sup As Single = 0.4
     Const largP2Inf As Single = 0.28
 
-    Dim qtPortaInf As Integer
     Dim qtGaveta As Integer
     Dim qtLatSup As Integer
     Dim qtRipaSup As Integer
     Dim qtLatInf As Integer
     Dim qtRipaInf As Integer
     
-    qtPortaInf = 2
 
     Select Case modelo
         Case "Branco":
@@ -401,14 +401,37 @@ Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold) As Sin
         Case "Azul":
             qtLatSup = 4: qtRipaSup = 2
             qtLatInf = 3: qtRipaInf = 2: qtGaveta = 1
-            If largI < 0.6 Then qtPortaInf = 1
+            If largI < 0.6 Then qtPInf = 1
         Case "Cinza":
             qtLatSup = 3: qtRipaSup = 0
             qtLatInf = 2: qtRipaInf = 0: qtGaveta = 0
     End Select
 
     vBanheiros = vCxSup(largS, altS, profS, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup) + _
-        vCxInf(largI, altI, profI, qtLatInf, qtRipaInf) + (vPortaInf(largP1Inf, mold) * qtPortaInf) + _
+        vCxInf(largI, altI, profI, qtLatInf, qtRipaInf) + (vPortaInf(largP1Inf, mold) * qtPInf) + _
         (vGaveta(largP1Inf, mold, profI) * qtGaveta)
 
 End Function
+
+Function vNicho(largN, altN, profN) As Single
+
+    Dim m2Nicho As Single
+    Dim latsN As Single
+    Dim basesN As Single
+
+    Debug.Print ("Nicho pass")
+
+    ' m2
+    basesN = (largN * 2) * 2
+    latsN = (altN * 2) * 2
+    m2Nicho = ((basesN + latsN) * profN) + (largN * altN)
+
+    ' $
+    vNicho = m2Nicho * vMaterial(15) * markup(3)
+    
+End Function
+
+' TODO: Incluir nichos
+'       Orçar opções de cuba
+'       Tampo de granito
+
