@@ -104,6 +104,12 @@ Private Sub btn_medida_padrao_Click()
 
 End Sub
 
+Private Sub TextLSup_AfterUpdate()
+    If TextLSup.Value < 1 Then
+        MsgBox "Medida inválida para Largura Superior.", vbExclamation, "Erro!"
+    End If
+End Sub
+
 Private Sub btn_ok_Click()
 
     Dim modelo As String
@@ -138,12 +144,12 @@ Private Sub btn_ok_Click()
 
 
     ' Tests if inputs contains wrong separator
-    For Each i in dict.keys
-        If dict(i)(0) < 0.1 Then
-            ' TODO: add return to userform after error message
-            MsgBox "Medida inválida para " & dict(i)(1), vbExclamation, "Erro!"
-        End If
-    Next i
+    ' For Each i in dict.keys
+    '     If dict(i)(0) < 0.1 Then
+    '         ' TODO: add return to userform after error message
+    '         MsgBox "Medida inválida para " & dict(i)(1), vbExclamation, "Erro!"
+    '     End If
+    ' Next i
 
 
     If btn_medida_padrao.Value = False Then
