@@ -16,6 +16,8 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+Private colTB As Collection
+
 Private Sub btn_cancel_Click()
 
     Unload Me
@@ -104,12 +106,6 @@ Private Sub btn_medida_padrao_Click()
 
 End Sub
 
-Private Sub TextLSup_AfterUpdate()
-    If TextLSup.Value < 1 Then
-        MsgBox "Medida inválida para Largura Superior.", vbExclamation, "Erro!"
-    End If
-End Sub
-
 Private Sub btn_ok_Click()
 
     Dim modelo As String
@@ -124,32 +120,14 @@ Private Sub btn_ok_Click()
     Dim cor As String
     Dim qtPInf As Integer
     Dim i
-    
-    Dim dict
-    Set dict = CreateObject("Scripting.Dictionary")
 
     modelo = ComboBox_modelo.Value
 
-    dict.Add "lSup", Array(CSng(TextLSup / 100), "Largura Superior")
-    dict.Add "lInf", Array(CSng(TextLInf / 100), "Largura Inferior")
-    dict.Add "aSup", Array(CSng(TextASup / 100), "Altura Superior")
-    dict.Add "aInf", Array(CSng(TextAInf / 100), "Altura Inferior")
-    dict.Add "pSup", Array(CSng(TextPSup / 100), "Profundidade Superior")
-
-    lSup = dict("lSup")(0)
-    lInf = dict("lInf")(0)
-    aSup = dict("aSup")(0)
-    aInf = dict("aInf")(0)
-    pSup = dict("pSup")(0)
-
-
-    ' Tests if inputs contains wrong separator
-    ' For Each i in dict.keys
-    '     If dict(i)(0) < 0.1 Then
-    '         ' TODO: add return to userform after error message
-    '         MsgBox "Medida inválida para " & dict(i)(1), vbExclamation, "Erro!"
-    '     End If
-    ' Next i
+    lSup = TextLSup / 100
+    lInf = TextLInf / 100
+    aSup = TextASup / 100
+    aInf = TextAInf / 100
+    pSup = TextPSup / 100
 
 
     If btn_medida_padrao.Value = False Then
@@ -179,7 +157,7 @@ Private Sub btn_ok_Click()
 
     Call InserirLinha(desc_text(lSup, lInf, aSup, aInf, pSup, pInf, cor, mold, qtPInf), Valor)
 
-Done:
+
     Unload Me
 
     Call FormatarTabela
@@ -187,9 +165,7 @@ Done:
     Call FormatarTotais
 
     Exit Sub
-err:
-    MsgBox "Erro! Verifique as informações digitadas e tente novamente...", "Erro!", vbExclamation
-
+    
 End Sub
 
 Private Sub ComboBox_modelo_Change()
@@ -231,6 +207,20 @@ Private Sub UserForm_Initialize()
 
     qtdePortas.Value = 2
 
+    Dim c As Object
+    Set colTB = New Collection
+    'loop all controls in the frame
+    For Each c In Me.FrameMedidas.Controls
+        'look for text boxes
+        If TypeName(c) = "TextBox" Then
+            colTB.Add TbHandler(c) ' create and store an instance of your class
+        End If
+    Next c
+
 End Sub
 
-
+Private Function TbHandler(tb As Object) As clsTxt
+    Dim o As New clsTxt
+    o.Init tb
+    Set TbHandler = o
+End Function
