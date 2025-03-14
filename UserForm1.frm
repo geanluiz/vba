@@ -34,7 +34,7 @@ Private Sub btn_cor_padrao_Click()
         cor = ComboBox_modelo.Value
     End If
         
-    If btn_cor_padrao.Value = True Then
+    If btn_cor_padrao.Value Then
         Text_cor.Value = cor
         Text_cor.ForeColor = &H80000010
         Text_cor.Locked = True
@@ -53,7 +53,7 @@ Private Sub medida_padrao()
     textBoxes = Array(TextASup, TextAInf, TextLSup, TextLInf, TextPSup)
 
 
-    If btn_medida_padrao.Value = True Then
+    If btn_medida_padrao.Value Then
 
         Call set_medidas
 
@@ -130,19 +130,19 @@ Private Sub btn_ok_Click()
     pSup = TextPSup.Value / 100
 
 
-    If btn_medida_padrao.Value = False Then
+    If Not btn_medida_padrao.Value Then
         pInf = TextPInf.Value / 100
     Else
-        If btn_prof50.Value = True Then
+        If btn_prof50.Value Then
             pInf = 0.5
         Else
             pInf = 0.4
         End If
     End If
 
-    If porta_aplq.Value = True Then
+    If porta_aplq.Value Then
         mold = "aplq"
-    ElseIf porta_mold.Value = True Then
+    ElseIf porta_mold.Value Then
         mold = "mold"
     Else
         mold = "rpd"
@@ -176,7 +176,7 @@ Private Sub ComboBox_modelo_Change()
         cor = ComboBox_modelo.Value
     End If
 
-    If btn_cor_padrao.Value = True Then
+    If btn_cor_padrao.Value Then
         Text_cor.Value = cor
     Else
         Text_cor.Locked = False
