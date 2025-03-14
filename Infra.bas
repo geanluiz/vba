@@ -133,18 +133,21 @@ Sub ExcluirLinha()
 
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
-    Dim items As String
-    Dim NewRow As Range
+    Dim items As Variant
     Dim inputArray
-    Dim strt As Integer
-    Dim endI As Integer
     Dim i As Integer
 
-    On Error Resume Next
+    
     items = Application.InputBox("Qual(is) item(s) deseja excluir? (e.g., 3 ou 2,5)", "Excluir Linhas", Type:=2)
+    If items = False Then
+        Exit Sub
+    End If
+    
     inputArray = Split(items, "-")
 
-    If UBound(inputArray) > 1 Then GoTo err
+    If UBound(inputArray) > 1 Then 
+        MsgBox "Erro! Verifique as informações digitadas e tente novamente...", "Erro!", vbExclamation
+    End If
 
     If UBound(inputArray) = 0 Then
         Tbl.ListRows(inputArray(0)).Delete
@@ -154,18 +157,12 @@ Sub ExcluirLinha()
         Tbl.ListRows(inputArray(0)).Delete
     Next i
 
-    Done: 
 
     Call FormatarTotais
 
     Call FormatarTabela
 
     Call BloquearPlanilha
-
-    Exit Sub
-
-    err:
-    MsgBox "Erro! Verifique as informações digitadas e tente novamente...", "Erro!", vbExclamation
 
 End Sub
 
@@ -178,7 +175,6 @@ Sub NovoOrcamento()
     Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
 
     Dim rowCount As Integer
-    Dim line As Variant
     Dim NewRow As Range
 
     rowCount = Tbl.ListRows.Count
@@ -205,7 +201,6 @@ Sub MoverMenu()
 
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
     Dim btns As Shape: Set btns = ws.Shapes("GrupoBtns")
-    Dim distancia As Integer
 
     If Range("H2") = "" Then
         btns.Top = 25
@@ -223,10 +218,6 @@ Sub MostrarTabela(table As String)
     Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
     Dim valoresChapas As ListObject: Set valoresChapas = ws.ListObjects("ValoresChapas")
     Dim valoresAcess As ListObject: Set valoresAcess = ws.ListObjects("ValoresAcess")
-
-    Dim tableOn As String
-    Dim tableOff As String
-    Dim tblRange As ListObject
 
     Select Case table
         Case "Cliente":
@@ -257,11 +248,6 @@ End Sub
 Sub MenuClick()
 
     Call DesbloquearPlanilha
-
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim Cliente As ListObject: Set Cliente = ws.ListObjects("DadosOrcto")
-    Dim Chapas As ListObject: Set Chapas = ws.ListObjects("ValoresChapas")
-    Dim Acess As ListObject: Set Acess = ws.ListObjects("ValoresAcess")
 
     If Range("$H$2").Value2 = "" Or current = Application.Caller() Then
         Call MostrarTabela(Application.Caller())
