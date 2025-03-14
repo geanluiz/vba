@@ -30,7 +30,7 @@ Private Sub medida_padrao()
     textBoxes = Array(TextLarg, TextProf, TextEsp)
 
 
-    If btn_medida_padrao.Value = True Then
+    If btn_medida_padrao.Value Then
 
         Call set_medidas
 
