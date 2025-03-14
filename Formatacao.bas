@@ -14,7 +14,6 @@ Dim profI As Single
 Dim medSup As String
 Dim medInf As String
 Dim qtPInf As Integer
-Dim pluralPortas As String
 Dim trechoPortas As String
 
 Function desc_text(largS, largI, altS, altI, profS, profI, cor, moldRpdAplq, qtPInf) As String
@@ -92,13 +91,7 @@ Sub FormatarTabela()
 
 
     'formatar linhas da tabela
-    With Tbl.DataBodyRange.EntireRow
-        ' .Interior.Pattern = xlNone
-        ' .Interior.TintAndShade = 0
-        ' .Interior.PatternTintAndShade = 0
-        .AutoFit
-    End With
-
+    Tbl.DataBodyRange.EntireRow.AutoFit
 
     'Atualizar index dos itens
     For Each i In Tbl.DataBodyRange.Rows
@@ -117,55 +110,8 @@ Sub FormatarTotais()
     
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
-    Dim total1 As Range
-    Dim total2 As Range
 
-    Set total1 = Tbl.TotalsRowRange.Range(Cells(2), Cells(4))
-    Set total2 = Tbl.TotalsRowRange.Cells(5)
-
-    'formatar linha de totais - bordas
-    ' total1.Borders(xlDiagonalDown).LineStyle = xlNone
-    ' total1.Borders(xlDiagonalUp).LineStyle = xlNone
-    ' With total1.Borders(xlEdgeLeft)
-    '     .LineStyle = xlContinuous
-    '     .ThemeColor = 1
-    '     .TintAndShade = 0
-    '     .Weight = xlThin
-    ' End With
-    ' With total1.Borders(xlEdgeTop)
-    '     .LineStyle = xlContinuous
-    '     .ColorIndex = 0
-    '     .TintAndShade = 0
-    '     .Weight = xlThin
-    ' End With
-    ' With total1.Borders(xlEdgeBottom)
-    '     .LineStyle = xlContinuous
-    '     .ColorIndex = 0
-    '     .TintAndShade = 0
-    '     .Weight = xlThin
-    ' End With
-    ' With total1.Borders(xlEdgeRight)
-    '     .LineStyle = xlContinuous
-    '     .ColorIndex = 0
-    '     .TintAndShade = 0
-    '     .Weight = xlThin
-    ' End With
-    ' With total1.Borders(xlInsideVertical)
-    '     .LineStyle = xlContinuous
-    '     .ThemeColor = 1
-    '     .TintAndShade = 0
-    '     .Weight = xlThin
-    ' End With
-    ' total1.Borders(xlInsideHorizontal).LineStyle = xlNone
-
-
-    'formatar linha de totais - fonte
-    ' total1.Font.FontStyle = "Arial"
-    ' Tbl.TotalsRowRange.Font.Size = 11
-    ' total1.Font.Bold = True
-    ' total1.HorizontalAlignment = xlCenter
     Tbl.TotalsRowRange.RowHeight = 35
-    ' total2.Style = "Currency"
 
     Call BloquearPlanilha
 
