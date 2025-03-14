@@ -24,7 +24,6 @@ Dim largPI As Single
 Dim moldRpdAplqPI As String
 
 Dim largG As Single
-Dim moldRpdAplqG As String
 Dim profG As Single
 
 Dim modelo As String
@@ -67,8 +66,7 @@ End Function
 Function markup(multi) As Single
 
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim dadosCliente As ListObject
-    Set dadosCliente = ws.ListObjects("DadosOrcto")
+    Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
     Dim mkp As Integer
 
     mkp = dadosCliente.DataBodyRange.Cells(1, 4).Value
@@ -381,8 +379,8 @@ Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold, qtPInf
 
     Const largP1Sup As Single = 0.48
     Const largP1Inf As Single = 0.33
-    Const largP2Sup As Single = 0.4
-    Const largP2Inf As Single = 0.28
+    ' Const largP2Sup As Single = 0.4  ' Largura da porta superior no modelo cinza
+    ' Const largP2Inf As Single = 0.28 ' Largura da porta inferior no modelo cinza
 
     Dim qtGaveta As Integer
     Dim qtLatSup As Integer
