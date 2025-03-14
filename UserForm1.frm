@@ -123,11 +123,11 @@ Private Sub btn_ok_Click()
 
     modelo = ComboBox_modelo.Value
 
-    lSup = TextLSup / 100
-    lInf = TextLInf / 100
-    aSup = TextASup / 100
-    aInf = TextAInf / 100
-    pSup = TextPSup / 100
+    lSup = TextLSup.Value / 100
+    lInf = TextLInf.Value / 100
+    aSup = TextASup.Value / 100
+    aInf = TextAInf.Value / 100
+    pSup = TextPSup.Value / 100
 
 
     If btn_medida_padrao.Value = False Then
@@ -163,8 +163,6 @@ Private Sub btn_ok_Click()
     Call FormatarTabela
     
     Call FormatarTotais
-
-    Exit Sub
     
 End Sub
 
@@ -207,19 +205,21 @@ Private Sub UserForm_Initialize()
 
     qtdePortas.Value = 2
 
+    
+    ' Creates clsTxt classes for each text box to add
+    ' An event listener that checks the correct use of floating points
     Dim c As Object
     Set colTB = New Collection
-    'loop all controls in the frame
     For Each c In Me.FrameMedidas.Controls
-        'look for text boxes
         If TypeName(c) = "TextBox" Then
-            colTB.Add TbHandler(c) ' create and store an instance of your class
+            colTB.Add TbHandler(c)
         End If
     Next c
 
 End Sub
 
 Private Function TbHandler(tb As Object) As clsTxt
+    ' Instantiate objects
     Dim o As New clsTxt
     o.Init tb
     Set TbHandler = o

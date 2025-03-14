@@ -16,14 +16,16 @@ Sub Init(tbox As Object)
     Set tb = tbox
 End Sub
 
-Private Sub tb_KeyUp(ByVal KeyAscii As MSForms.ReturnInteger)
+Private Sub tb_KeyUp(ByVal KeyAscii As MSForms.ReturnInteger, ByVal Shift As Integer)
 
-	If InStr(tb.Value, ",") Then
-		tb.Value = Replace(tb.Value, ",", ".")
+	' Make sure dots are accepted as decimal point
+	If InStr(tb.Value, ".") Then
+		tb.Value = Replace(tb.Value, ".", ",")
 	End If
 
+	' Warns user if he may have not entered a size in centimeters
+	If InStr(tb.Value, ",") < 3 And InStr(tb.Value, ",") > 0 Then
+		MsgBox "Medida inválida para " & tb.ControlTipText & "." _
+			& vbCrLf & "Este campo aceita somente medidas em centímetros.", vbExclamation, "Erro"
+	End If
 End Sub
-
-Function getName() As String
-	getName = tb.Name
-End Function
