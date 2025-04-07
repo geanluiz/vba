@@ -68,7 +68,7 @@ Sub ExportarPDF()
     ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, _
         IncludeDocProperties:=True, IgnorePrintAreas:=False, _
         OpenAfterPublish:=True, Filename:=oPath
-    MsgBox "Salvo em" & oPath, "PDF Salvo", vbInformation
+    MsgBox "Salvo em" & oPath, vbInformation, "PDF Salvo"
     
     Call BloquearPlanilha
        
@@ -144,18 +144,24 @@ Sub ExcluirLinha()
     End If
     
     inputArray = Split(items, "-")
+    ' Cast items inside inputArray from [sub]string to integer
+    For i = LBound(inputArray) To UBound(inputArray)
+        inputArray(i) = CInt(inputArray(i))
+    Next i
+
 
     If UBound(inputArray) > 1 Then 
         MsgBox "Erro! Verifique as informações digitadas e tente novamente...", "Erro!", vbExclamation
+    ElseIf UBound(inputArray) = 0 Then
+        Tbl.ListRows(inputArray(0)).Delete
+    Else
+        For i = inputArray(0) To inputArray(1)
+            Tbl.ListRows(inputArray(0)).Delete
+        Next i
     End If
 
-    If UBound(inputArray) = 0 Then
-        Tbl.ListRows(inputArray(0)).Delete
-    End If
-
-    For i = inputArray(0) To inputArray(1)
-        Tbl.ListRows(inputArray(0)).Delete
-    Next i
+    
+    If Tbl.ListRows.Count = 0 Then Tbl.ListRows.Add
 
 
     Call FormatarTotais
