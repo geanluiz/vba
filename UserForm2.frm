@@ -16,6 +16,8 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+Private colTB As Collection
+
 Private Sub btn_cancel_Click()
 
     Unload Me
@@ -107,7 +109,7 @@ Private Sub UserForm_Initialize()
     ComboBoxCor.List = cores
     ComboBoxCor.ListIndex = 0
 
-    rod = Array("Somente fundo", "Fundo e lateral")
+    rod = Array("Fundo e lateral", "Somente fundo")
 
     Combo_box_Rod.List = rod
     Combo_box_Rod.ListIndex = 0
@@ -115,6 +117,22 @@ Private Sub UserForm_Initialize()
 
     Call medida_padrao
 
-    qtdePortas.Value = 2
+
+    ' Creates clsTxt classes for each text box to add
+    ' An event listener that checks the correct use of floating points
+    Dim c As Object
+    Set colTB = New Collection
+    For Each c In Me.FrameMedidas.Controls
+        If TypeName(c) = "TextBox" Then
+            colTB.Add TbHandler(c)
+        End If
+    Next c
 
 End Sub
+
+Private Function TbHandler(tb As Object) As clsTxt
+    ' Instantiate objects
+    Dim o As New clsTxt
+    o.Init tb
+    Set TbHandler = o
+End Function
