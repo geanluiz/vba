@@ -224,6 +224,9 @@ Sub MostrarTabela(table As String)
     Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
     Dim valoresChapas As ListObject: Set valoresChapas = ws.ListObjects("ValoresChapas")
     Dim valoresAcess As ListObject: Set valoresAcess = ws.ListObjects("ValoresAcess")
+    Dim valoresGranito As ListObject: Set valoresGranito = ws.ListObjects("coresGranito")
+    Dim valoresCubas As ListObject: Set valoresCubas = ws.ListObjects("modelosCubas")
+
 
     Select Case table
         Case "Cliente":
@@ -245,6 +248,20 @@ Sub MostrarTabela(table As String)
                 valoresAcess.Range.Cut Range("$U$5:$Z$6")
             Else
                 valoresAcess.Range.Cut Range("$H$2:$M$3")
+                current = table
+            End If
+        Case "Granito":
+            If valoresGranito.Range.Address = "$H$2:$L$3" Then
+                valoresGranito.Range.Cut Range("$AB$2:$AF$3")
+            Else
+                valoresGranito.Range.Cut Range("$H$2:$L$3")
+                current = table
+            End If
+        Case "Cubas":
+            If valoresCubas.Range.Address = "$H$2:$L$3" Then
+                valoresCubas.Range.Cut Range("$AB$5:$AF$6")
+            Else
+                valoresCubas.Range.Cut Range("$H$2:$L$3")
                 current = table
             End If
     End Select
