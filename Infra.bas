@@ -81,17 +81,22 @@ Sub BloquearPlanilha()
     Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
     Dim vChapas As ListObject: Set vChapas = ws.ListObjects("ValoresChapas")
     Dim vAcess As ListObject: Set vAcess = ws.ListObjects("ValoresAcess")
+    Dim vGranito As ListObject: Set vGranito = ws.ListObjects("coresGranito")
 
 
     ws.Unprotect Password:="a123a456"
 
 
     ' tabela principal
-    Tbl.DataBodyRange.Columns(1).Locked = True       ' coluna de indices tabela principal
-    Tbl.DataBodyRange.Columns(2).Locked = False      ' coluna descrição
-    Tbl.DataBodyRange.Columns(3).Locked = False      ' coluna quantidade
-    Tbl.DataBodyRange.Columns(4).Locked = False      ' coluna valor unit
-    Tbl.DataBodyRange.Columns(5).Locked = True       ' coluna valor final do item
+    If Not Tbl.DataBodyRange Is Nothing Then
+        With Tbl.DataBodyRange
+            .Columns(1).Locked = True       ' coluna de indices tabela principal
+            .Columns(2).Locked = False      ' coluna descrição
+            .Columns(3).Locked = False      ' coluna quantidade
+            .Columns(4).Locked = False      ' coluna valor unit
+            .Columns(5).Locked = True       ' coluna valor final do item
+        End With
+    End If
     Tbl.TotalsRowRange.EntireRow.Locked = True       ' linha de totais
 
     ' tabelas auxiliares
@@ -100,6 +105,7 @@ Sub BloquearPlanilha()
     vChapas.DataBodyRange.Rows(1).Locked = False     ' valores das chapas
     vChapas.DataBodyRange.Cells(1, 1).Locked = True  ' texto "chapa"
     vChapas.DataBodyRange.Cells(1, 2).Locked = False ' m² das chapas
+    vGranito.DataBodyRange.Columns(1).Locked = True
     
 
     Range("G1").Locked = False                       ' referência usada no if abaixo
