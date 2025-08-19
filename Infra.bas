@@ -10,7 +10,6 @@ Sub InserirLinha(Description As String, Valor As Single)
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
     Dim NewRow As Range
-    Dim ItemIndex As Integer
     
     Const desc As Integer = 2
     Const Qtde As Integer = 3
@@ -22,8 +21,6 @@ Sub InserirLinha(Description As String, Valor As Single)
     If Tbl.DataBodyRange.Cells(1, 2) = "" Then
         Tbl.DataBodyRange.Rows(1).Delete
     End If
-    
-    ItemIndex = NewRow.row - 9
         
     With NewRow
         .Cells(desc) = Description
