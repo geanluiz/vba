@@ -110,8 +110,25 @@ Sub FormatarTotais()
     
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
+    Dim total1 As Range
+    Dim total2 As Range
+
+    Set total1 = Tbl.TotalsRowRange.Range(Cells(2), Cells(4))
+
+    With total1.Borders(xlEdgeLeft)
+        .ThemeColor = 1
+    End With
+    With total1.Borders(xlInsideVertical)
+        .ThemeColor = 1
+    End With
+
 
     Tbl.TotalsRowRange.RowHeight = 35
+    
+
+    total1.Font.Bold = True
+    total1.HorizontalAlignment = xlCenter
+
 
     Call BloquearPlanilha
 
