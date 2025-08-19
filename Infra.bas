@@ -144,7 +144,7 @@ Sub ExcluirLinha()
     Dim i As Integer
 
     
-    items = Application.InputBox("Qual(is) item(s) deseja excluir? (e.g., 3 ou 2,5)", "Excluir Linhas", Type:=2)
+    items = Application.InputBox("Qual(is) item(s) deseja excluir? (e.g., 3 ou 2-5)", "Excluir Linhas", Type:=2)
     If items = False Then
         Exit Sub
     End If
