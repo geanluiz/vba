@@ -88,6 +88,7 @@ Sub FormatarTabela()
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
     Dim i As Range
+    Dim wordLimit as Integer
 
 
     'formatar linhas da tabela
@@ -98,7 +99,12 @@ Sub FormatarTabela()
         If Not i.Cells(1) = i.row - 9 Then
             i.Cells(1) = i.row - 9
         End If
+        
+        wordLimit = InStr(i.Cells(2).Value, ":") + 1
+        i.Cells(2).Characters(Start:=0, Length:=wordLimit).Font.Bold = True
+
     Next
+
 
     Call BloquearPlanilha
 
