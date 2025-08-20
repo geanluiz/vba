@@ -36,6 +36,14 @@ Dim profI As Single
 Dim mold As String
 Dim qtPInf As Integer
 
+Dim largT As Single
+Dim profT As Single
+Dim corGranito As String
+Dim esp As Integer
+Dim altRod As Single
+Dim qtRod As Integer
+Dim cuba As String
+
 
 'valor dos materiais
 Function vMaterial(material) As Single
@@ -43,6 +51,8 @@ Function vMaterial(material) As Single
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
     Dim vChapas As ListObject: Set vChapas = ws.ListObjects("ValoresChapas")
     Dim vAcess As ListObject: Set vAcess = ws.ListObjects("ValoresAcess")
+    Dim vGranito As ListObject: Set vGranito = ws.ListObjects("coresGranito")
+    Dim vCubas As ListObject: Set vCubas = ws.ListObjects("modelosCubas")
 
     Dim m2chapa As Single
     m2chapa = vChapas.DataBodyRange.Cells(1, 2).Value
@@ -58,6 +68,14 @@ Function vMaterial(material) As Single
         Case "esp": vMaterial = vAcess.DataBodyRange.Cells(1, 4).Value
         Case "corr": vMaterial = vAcess.DataBodyRange.Cells(1, 5).Value
         Case "pe":  vMaterial = vAcess.DataBodyRange.Cells(1, 6).Value
+        Case "Verde Labrador": vMaterial = vGranito.DataBodyRange.Cells(1, 2).Value
+        Case "Preto São Gabriel": vMaterial = vGranito.DataBodyRange.Cells(2, 2).Value
+        Case "Cinza Andorinha": vMaterial = vGranito.DataBodyRange.Cells(3, 2).Value
+        Case "Branco Itaúnas": vMaterial = vGranito.DataBodyRange.Cells(4, 2).Value
+        Case "Cuba redonda" : vMaterial = vCubas.DataBodyRange.Cells(1, 2).Value
+        Case "Cuba red slim" : vMaterial = vCubas.DataBodyRange.Cells(2, 2).Value
+        Case "Cuba retangular" : vMaterial = vCubas.DataBodyRange.Cells(3, 2).Value
+        Case "Cuba ret slim" : vMaterial = vCubas.DataBodyRange.Cells(4, 2).Value
     End Select
 
 End Function
@@ -433,9 +451,65 @@ Function vNicho(largN, altN, profN) As Single
     
 End Function
 
-' TODO: Incluir nichos
-'       Orçar opções de cuba
-'       Tampo de granito
+Function vTampo(largT, profT, corGranito, esp, ByVal altRod, qtRod, cuba)
+
+    Dim m2Tampo As Single
+    Dim subVTampo As Single
+    Dim vCuba As Single
+    Dim acresc As Single
+    Dim engFront As Single
+    Dim engLat As Single
+
+    Const FTORNEIRA As Integer = 30
+    Const INSTALACAO As Integer = 100
+    
+    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
 
 
+    altRod = Application.Ceiling(altRod, 0.05)
 
+
+    engFront = 0
+    engLat = 0
+
+    If qtRod = 1 Then
+        If esp = 4 Then
+            engFront = 0.1
+            engLat = 0.2
+        End If
+
+        subVTampo = (largT + engLat) * (profT + altRod + engFront)
+    ElseIf qtRod = 2 Then
+        If esp = 4 Then
+            engFront = 0.1
+            engLat = 0.1
+        End If
+        
+        subVTampo = (largT + altRod + engLat) * (profT + altRod + engFront)
+    End If
+
+
+    m2Tampo = subVTampo * vMaterial(corGranito) * markup(3)
+
+
+    Select Case cuba
+        Case "cuba_red":
+            vCuba = vMaterial("Cuba redonda")
+        Case "cuba_red_slim":
+            vCuba = vMaterial("Cuba red slim")
+        Case "cuba_ret":
+            vCuba = vMaterial("Cuba retangular")
+        Case "cuba_ret_slim":
+            vCuba = vMaterial("Cuba ret slim")
+        Case "OptionSemCuba":
+            vCuba = 0
+    End Select
+
+
+    acresc = dadosCliente.DataBodyRange.Cells(1, 5).Value
+
+
+    vTampo = (m2Tampo + vCuba + FTORNEIRA + INSTALACAO) * (1 + acresc)
+
+End Function

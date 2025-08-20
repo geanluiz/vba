@@ -15,6 +15,10 @@ Dim medSup As String
 Dim medInf As String
 Dim qtPInf As Integer
 Dim trechoPortas As String
+Dim largT As Single
+Dim profT As Single
+Dim cuba As Integer
+Dim medRod As Single
 
 Function desc_text(largS, largI, altS, altI, profS, profI, cor, moldRpdAplq, qtPInf) As String
 
@@ -44,6 +48,35 @@ Function desc_text(largS, largI, altS, altI, profS, profI, cor, moldRpdAplq, qtP
     " ferragens em inox e; Balcão a prova dagua pintado na cor " & _
     cor & " med. " & medInf & "cm " & trechoPortas & _
     mold & " e ferragens em inox."
+
+End Function
+
+Function desc_tampo(cor, largT, profT, cuba, medRod)
+
+    Dim modelo As String
+    Dim sep As String
+
+    
+    medRod = medRod * 100
+
+    sep = ", "
+
+    Select Case cuba
+        Case "cuba_red":
+            modelo = " e cuba Redonda em louça branca."
+        Case "cuba_red_slim":
+            modelo = " e cuba Redonda Slim em louça branca."
+        Case "cuba_ret":
+            modelo = " e cuba Retangular em louça branca."
+        Case "cuba_ret_slim":
+            modelo = " e cuba Retangular Slim em louça branca."
+        Case "OptionSemCuba":
+            modelo = ". Cuba não inclusa."
+            sep = " e "
+    End Select
+
+    desc_tampo = "BANHEIRO: Tampo em granito " & cor & " med. " & largT * 100 & "x" & profT * 100 & _
+        "cm com rodopia de " & medRod & "cm" & sep & "acabamento em meia esquadria" & modelo
 
 End Function
 
