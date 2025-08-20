@@ -100,6 +100,8 @@ Sub FormatarTabela()
             i.Cells(1) = i.row - 9
         End If
         
+        i.Font.Bold = False
+
         wordLimit = InStr(i.Cells(2).Value, ":") + 1
         i.Cells(2).Characters(Start:=0, Length:=wordLimit).Font.Bold = True
 
