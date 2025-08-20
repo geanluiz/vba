@@ -387,6 +387,10 @@ Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold, qtPInf
     Dim qtRipaSup As Integer
     Dim qtLatInf As Integer
     Dim qtRipaInf As Integer
+    Dim acresc As Single
+    
+    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
     
 
     Select Case modelo
@@ -404,10 +408,12 @@ Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold, qtPInf
             qtLatSup = 3: qtRipaSup = 0
             qtLatInf = 2: qtRipaInf = 0: qtGaveta = 0
     End Select
+    
+    acresc = dadosCliente.DataBodyRange.Cells(1, 5).Value
 
-    vBanheiros = vCxSup(largS, altS, profS, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup) + _
+    vBanheiros = (vCxSup(largS, altS, profS, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup) + _
         vCxInf(largI, altI, profI, qtLatInf, qtRipaInf) + (vPortaInf(largP1Inf, mold) * qtPInf) + _
-        (vGaveta(largP1Inf, mold, profI) * qtGaveta)
+        (vGaveta(largP1Inf, mold, profI) * qtGaveta)) * (1 + acresc)
 
 End Function
 
