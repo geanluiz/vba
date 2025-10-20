@@ -83,15 +83,11 @@ End Function
 'retorna o markup conforme tipo de material
 Function markup(multi) As Single
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
-    Dim mkp As Integer
-
-    mkp = dadosCliente.DataBodyRange.Cells(1, 4).Value
+    Const MKP As Integer = 3
 
     Select Case multi
-        Case 3: markup = mkp
-        Case 2: markup = mkp * 0.8
+        Case 3: markup = MKP
+        Case 2: markup = MKP * 0.8
     End Select
     
 End Function
