@@ -44,6 +44,8 @@ Dim altRod As Single
 Dim qtRod As Integer
 Dim cuba As String
 
+Const acresc As Single = 0.12233
+
 
 'valor dos materiais
 Function vMaterial(material) As Single
@@ -401,10 +403,6 @@ Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold, qtPInf
     Dim qtRipaSup As Integer
     Dim qtLatInf As Integer
     Dim qtRipaInf As Integer
-    Dim acresc As Single
-    
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
     
 
     Select Case modelo
@@ -422,8 +420,6 @@ Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold, qtPInf
             qtLatSup = 3: qtRipaSup = 0
             qtLatInf = 2: qtRipaInf = 0: qtGaveta = 0
     End Select
-    
-    acresc = dadosCliente.DataBodyRange.Cells(1, 5).Value
 
     vBanheiros = (vCxSup(largS, altS, profS, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup) + _
         vCxInf(largI, altI, profI, qtLatInf, qtRipaInf) + (vPortaInf(largP1Inf, mold) * qtPInf) + _
@@ -443,7 +439,7 @@ Function vNicho(largN, altN, profN) As Single
     m2Nicho = ((basesN + latsN) * profN) + (largN * altN)
 
     ' $
-    vNicho = m2Nicho * vMaterial(15) * markup(3)
+    vNicho = m2Nicho * vMaterial(15) * markup(3) * (1 + acresc)
     
 End Function
 
@@ -452,15 +448,11 @@ Function vTampo(largT, profT, corGranito, esp, ByVal altRod, qtRod, cuba)
     Dim m2Tampo As Single
     Dim subVTampo As Single
     Dim vCuba As Single
-    Dim acresc As Single
     Dim engFront As Single
     Dim engLat As Single
 
     Const FTORNEIRA As Integer = 30
     Const INSTALACAO As Integer = 100
-    
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
 
 
     altRod = Application.Ceiling(altRod, 0.05)
@@ -501,9 +493,6 @@ Function vTampo(largT, profT, corGranito, esp, ByVal altRod, qtRod, cuba)
         Case "OptionSemCuba":
             vCuba = 0
     End Select
-
-
-    acresc = dadosCliente.DataBodyRange.Cells(1, 5).Value
 
 
     vTampo = (m2Tampo + vCuba + FTORNEIRA + INSTALACAO) * (1 + acresc)
