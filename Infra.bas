@@ -79,6 +79,7 @@ Sub BloquearPlanilha()
     Dim vChapas As ListObject: Set vChapas = ws.ListObjects("ValoresChapas")
     Dim vAcess As ListObject: Set vAcess = ws.ListObjects("ValoresAcess")
     Dim vGranito As ListObject: Set vGranito = ws.ListObjects("coresGranito")
+    Dim vCubas As ListObject: Set vCubas = ws.ListObjects("modelosCubas")
 
 
     ws.Unprotect Password:="a123a456"
@@ -87,25 +88,23 @@ Sub BloquearPlanilha()
     ' tabela principal
     If Not Tbl.DataBodyRange Is Nothing Then
         With Tbl.DataBodyRange
-            .Columns(1).Locked = True       ' coluna de indices tabela principal
             .Columns(2).Locked = False      ' coluna descrição
             .Columns(3).Locked = False      ' coluna quantidade
             .Columns(4).Locked = False      ' coluna valor unit
-            .Columns(5).Locked = True       ' coluna valor final do item
         End With
     End If
-    Tbl.TotalsRowRange.EntireRow.Locked = True       ' linha de totais
 
     ' tabelas auxiliares
     vAcess.DataBodyRange.Locked = False              ' valores dos acessórios
     dadosCliente.DataBodyRange.Locked = False        ' dados do cliente/orçamento
     vChapas.DataBodyRange.Rows(1).Locked = False     ' valores das chapas
     vChapas.DataBodyRange.Cells(1, 1).Locked = True  ' texto "chapa"
-    vChapas.DataBodyRange.Cells(1, 2).Locked = False ' m² das chapas
     vGranito.DataBodyRange.Columns(1).Locked = True
+    ' vCubas.HeaderRowRange.Locked = True
+    ' vCubas.HeaderRowRange.Columns(1).Locked = True
     
 
-    Range("G1").Locked = False                       ' referência usada no if abaixo
+    Range("G1").Locked = False              ' referência usada no if abaixo
 
     If Range("G1") <> "t" Then ws.Protect Password:="a123a456"
     
