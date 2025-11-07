@@ -119,7 +119,6 @@ Private Sub btn_ok_Click()
     Dim Valor As Single
     Dim cor As String
     Dim qtPInf As Integer
-    Dim i
 
     modelo = ComboBox_modelo.Value
 
@@ -152,6 +151,7 @@ Private Sub btn_ok_Click()
     qtPInf = qtdePortas.Value
     cor = Text_cor.Value
     
+    Application.ScreenUpdating = False
 
     Valor = Application.Ceiling(vBanheiros(modelo, lSup, lInf, aSup, aInf, pSup, pInf, mold, qtPInf), 5)
 
@@ -163,6 +163,9 @@ Private Sub btn_ok_Click()
     Call FormatarTabela
     
     Call FormatarTotais
+
+    
+    Application.ScreenUpdating = True
     
 End Sub
 

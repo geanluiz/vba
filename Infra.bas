@@ -139,6 +139,7 @@ Sub ExcluirLinha()
     Dim inputArray
     Dim i As Integer
 
+    Application.ScreenUpdating = False
     
     items = Application.InputBox("Qual(is) item(s) deseja excluir? (e.g., 3 ou 2-5)", "Excluir Linhas", Type:=2)
     If items = False Then
@@ -171,6 +172,8 @@ Sub ExcluirLinha()
     Call FormatarTabela
 
     Call BloquearPlanilha
+
+    Application.ScreenUpdating = True
 
 End Sub
 

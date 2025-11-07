@@ -155,6 +155,7 @@ Sub FormatarTotais()
     Dim total2 As Range
 
     Set total1 = Tbl.TotalsRowRange.Range(Cells(2), Cells(4))
+    Set total2 = Tbl.TotalsRowRange.Cells(5)
 
     With total1.Borders(xlEdgeLeft)
         .ThemeColor = 1
@@ -168,6 +169,7 @@ Sub FormatarTotais()
     
 
     total1.Font.Bold = True
+    total2.Font.Bold = True
     total1.HorizontalAlignment = xlCenter
 
 
