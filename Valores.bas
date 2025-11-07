@@ -44,8 +44,6 @@ Dim altRod As Single
 Dim qtRod As Integer
 Dim cuba As String
 
-Const acresc As Single = 0.12233
-
 
 'valor dos materiais
 Function vMaterial(material) As Single
@@ -91,7 +89,27 @@ Function markup(multi) As Single
         Case 3: markup = MKP
         Case 2: markup = MKP * 0.8
     End Select
+
+End Function
+
+Function acrescCartao() As Single
+    Const txCartao As Single = 0.109    ' Taxa cobrada pela PagSeguro p/ pgto em 12x
+
+    acrescCartao = Round(txCartao / (1 - txCartao), 5)
+End Function 
+
+Function acrescTabela() As Single
     
+    Const stepTabela As Single = 0.1 / 5    ' 5 níveis(tabelas) com máximo de 10%
+
+    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
+    Dim prev As Single
+
+
+    prev = dadosCliente.DataBodyRange.Cells(1, 4) * stepTabela
+    acrescTabela =  Round(prev / (1 - prev), 5)
+
 End Function
 
 'valor da caixa superior
@@ -403,6 +421,7 @@ Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold, qtPInf
     Dim qtRipaSup As Integer
     Dim qtLatInf As Integer
     Dim qtRipaInf As Integer
+    Dim totalBanheiros As Integer
     
 
     Select Case modelo
@@ -421,9 +440,11 @@ Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold, qtPInf
             qtLatInf = 2: qtRipaInf = 0: qtGaveta = 0
     End Select
 
-    vBanheiros = (vCxSup(largS, altS, profS, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup) + _
+    totalBanheiros = (vCxSup(largS, altS, profS, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup) + _
         vCxInf(largI, altI, profI, qtLatInf, qtRipaInf) + (vPortaInf(largP1Inf, mold) * qtPInf) + _
-        (vGaveta(largP1Inf, mold, profI) * qtGaveta)) * (1 + acresc)
+        (vGaveta(largP1Inf, mold, profI) * qtGaveta)) 
+
+    vBanheiros = (totalBanheiros * (1 + acrescCartao())) * (1 + acrescTabela())
 
 End Function
 
@@ -432,6 +453,8 @@ Function vNicho(largN, altN, profN) As Single
     Dim m2Nicho As Single
     Dim latsN As Single
     Dim basesN As Single
+    Dim totalNicho Single
+
 
     ' m2
     basesN = (largN * 2) * 2
@@ -439,7 +462,8 @@ Function vNicho(largN, altN, profN) As Single
     m2Nicho = ((basesN + latsN) * profN) + (largN * altN)
 
     ' $
-    vNicho = m2Nicho * vMaterial(15) * markup(3) * (1 + acresc)
+    totalNicho = m2Nicho * vMaterial(15) * markup(3)
+    vNicho = (totalNicho * (1 + acrescCartao())) * (1 + acrescTabela())
     
 End Function
 
@@ -450,6 +474,7 @@ Function vTampo(largT, profT, corGranito, esp, ByVal altRod, qtRod, cuba)
     Dim vCuba As Single
     Dim engFront As Single
     Dim engLat As Single
+    Dim totalTampo As Single
 
     Const FTORNEIRA As Integer = 30
     Const INSTALACAO As Integer = 100
@@ -495,6 +520,7 @@ Function vTampo(largT, profT, corGranito, esp, ByVal altRod, qtRod, cuba)
     End Select
 
 
-    vTampo = (m2Tampo + vCuba + FTORNEIRA + INSTALACAO) * (1 + acresc)
+    totalTampo = m2Tampo + vCuba + FTORNEIRA + INSTALACAO
+    vTampo = (totalTampo * (1 + acrescCartao())) * (1 + acrescTabela())
 
 End Function
