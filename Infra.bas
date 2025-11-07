@@ -232,10 +232,10 @@ Sub MostrarTabela(table As String)
 
     Select Case table
         Case "Cliente":
-            If dadosCliente.Range.Address = "$H$2:$L$3" Then
-                dadosCliente.Range.Cut Range("$U$8:$Y$9")
+            If dadosCliente.Range.Address = "$H$2:$K$3" Then
+                dadosCliente.Range.Cut Range("$U$8:$X$9")
             Else
-                dadosCliente.Range.Cut Range("$H$2:$L$3")
+                dadosCliente.Range.Cut Range("$H$2:$K$3")
                 current = table
             End If
         Case "Chapas":
