@@ -18,7 +18,7 @@ Sub Worksheet_Change(ByVal Target As Range)
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
     Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
     
-    If Target.Address = dadosCliente.DataBodyRange.Cells(1, 1).Address Then
+    If Target.Address = dadosCliente.DataBodyRange.Rows(1).Address Then
         Application.EnableEvents = False
         Call FormatarCabecalho
         Application.EnableEvents = True
