@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm1 
-   Caption         =   "Informe os dados do mÃ³dulo que deseja inserir"
+   Caption         =   "Informe os dados do módulo que deseja inserir"
    ClientHeight    =   6240
    ClientLeft      =   120
    ClientTop       =   465
@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 
 Option Explicit
 
@@ -221,9 +222,9 @@ Private Sub UserForm_Initialize()
 
 End Sub
 
-Private Function TbHandler(tb As Object) As clsTxt
+Private Function TbHandler(tb As Object) As ClsTxt
     ' Instantiate objects
-    Dim o As New clsTxt
+    Dim o As New ClsTxt
     o.Init tb
     Set TbHandler = o
 End Function

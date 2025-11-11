@@ -121,7 +121,7 @@ Sub FormatarTabela()
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
     Dim i As Range
-    Dim wordLimit as Integer
+    Dim wordLimit As Integer
 
 
     'formatar linhas da tabela
@@ -136,7 +136,7 @@ Sub FormatarTabela()
         i.Font.Bold = False
 
         wordLimit = InStr(i.Cells(2).Value, ":") + 1
-        i.Cells(2).Characters(Start:=0, Length:=wordLimit).Font.Bold = True
+        i.Cells(2).Characters(start:=0, Length:=wordLimit).Font.Bold = True
 
     Next
 

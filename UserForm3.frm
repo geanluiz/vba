@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm3 
-   Caption         =   "Dados do orÃ§amento"
+   Caption         =   "Dados do orçamento"
    ClientHeight    =   3450
    ClientLeft      =   120
    ClientTop       =   465
@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 
 Option Explicit
 
@@ -48,7 +49,7 @@ Private Sub Txt_Data_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     End If
 End Sub
 
-Private Sub Btn_Cancel_Click()
+Private Sub btn_cancel_Click()
 
     Unload Me
 
@@ -66,6 +67,6 @@ Private Sub Btn_Save_Click()
 
     Unload Me
 
-	Call FormatarCabecalho
+    Call FormatarCabecalho
 End Sub
 

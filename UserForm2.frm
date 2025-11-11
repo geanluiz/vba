@@ -14,6 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
+
 Option Explicit
 
 Private colTB As Collection
@@ -96,7 +97,7 @@ Private Sub btn_ok_Click()
     Dim modelo As String
     Dim largT As Single
     Dim profT As Single
-    Dim valor As Single
+    Dim Valor As Single
     Dim cor As String
     Dim rod As String
     Dim esp As Integer
@@ -139,9 +140,9 @@ Private Sub btn_ok_Click()
     End If
 
     
-    valor = Application.Ceiling(vTampo(largT, profT, cor, esp, altRod, qtRod, cuba), 5)
+    Valor = Application.Ceiling(vTampo(largT, profT, cor, esp, altRod, qtRod, cuba), 5)
 
-    Call InserirLinha(desc_tampo(cor, largT, profT, cuba, altRod), valor)
+    Call InserirLinha(desc_tampo(cor, largT, profT, cuba, altRod), Valor)
 
 
     Unload Me
@@ -167,7 +168,7 @@ Private Sub UserForm_Initialize()
     ComboBox_modelo.ListIndex = 0
 
 
-    cores = Array("Verde Labrador", "Preto SÃ£o Gabriel", "Cinza Andorinha", "Branco ItaÃºnas")
+    cores = Array("Verde Labrador", "Preto São Gabriel", "Cinza Andorinha", "Branco Itaúnas")
 
     ComboBoxCor.List = cores
     ComboBoxCor.ListIndex = 0
@@ -194,9 +195,9 @@ Private Sub UserForm_Initialize()
 
 End Sub
 
-Private Function TbHandler(tb As Object) As clsTxt
+Private Function TbHandler(tb As Object) As ClsTxt
     ' Instantiate objects
-    Dim o As New clsTxt
+    Dim o As New ClsTxt
     o.Init tb
     Set TbHandler = o
 End Function

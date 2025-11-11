@@ -25,7 +25,7 @@ Private Sub tb_KeyUp(ByVal KeyAscii As MSForms.ReturnInteger, ByVal Shift As Int
 
 	' Warns user if he may have not entered a size in centimeters
 	If InStr(tb.Value, ",") < 3 And InStr(tb.Value, ",") > 0 Then
-		MsgBox "Medida inv√°lida para " & tb.ControlTipText & "." _
-			& vbCrLf & "Este campo aceita somente medidas em cent√≠metros.", vbExclamation, "Erro"
+		MsgBox "Medida inv·lida para " & tb.ControlTipText & "." _
+			& vbCrLf & "Este campo aceita somente medidas em centÌmetros.", vbExclamation, "Erro"
 	End If
 End Sub
