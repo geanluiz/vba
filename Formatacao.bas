@@ -95,7 +95,7 @@ Sub FormatarCabecalho()
     oNum = dadosCliente.DataBodyRange.Columns(3).Value
 
     
-    If oDate = "" Or Not oDate = Date Then
+    If oDate = "" Then
         oDate = Date
         dadosCliente.DataBodyRange.Cells(2).Value = oDate
     End If

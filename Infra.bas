@@ -129,6 +129,12 @@ Sub CallUserForm2()
     
 End Sub
 
+Sub CallUserForm3()
+
+    UserForm3.Show
+    
+End Sub
+
 Sub ExcluirLinha()
 
     Call DesbloquearPlanilha
