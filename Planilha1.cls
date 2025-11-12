@@ -4,8 +4,7 @@ Sub Worksheet_Open()
 
     Application.EnableEvents = True
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
+    Dim ws As Worksheet: Set ws = Worksheets("ORÇAMENTO")
     Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
     
     dadosCliente.DataBodyRange.Columns(1).Value = ""
@@ -15,14 +14,13 @@ End Sub
 
 Sub Worksheet_Change(ByVal Target As Range)
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
+    Application.EnableEvents = False
+
+    Call DesbloquearPlanilha
     
-    If Target.Address = dadosCliente.DataBodyRange.Rows(1).Address Then
-        Application.EnableEvents = False
-        Call FormatarCabecalho
-        Application.EnableEvents = True
+    If Not Intersect(Target, Range("G1")) Is Nothing Or Range("G1") = "" Then 
+        Call BloquearPlanilha
     End If
-
+    
+    Application.EnableEvents = True
 End Sub
-

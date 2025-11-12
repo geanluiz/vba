@@ -19,7 +19,7 @@ Option Explicit
 
 Private Sub UserForm_Initialize()
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
     Dim dadosOrcto As ListObject: Set dadosOrcto = ws.ListObjects("DadosOrcto")
 
     Dim i As Integer
@@ -57,8 +57,10 @@ End Sub
 
 Private Sub Btn_Save_Click()
     
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
     Dim dadosOrcto As ListObject: Set dadosOrcto = ws.ListObjects("DadosOrcto")
+    
+    Call DesbloquearPlanilha
 
     dadosOrcto.DataBodyRange.Cells(1, 1) = Txt_Cliente.Value
     dadosOrcto.DataBodyRange.Cells(1, 2) = Format(Txt_Data.Text, "mm/dd/yyyy")
@@ -68,5 +70,8 @@ Private Sub Btn_Save_Click()
     Unload Me
 
     Call FormatarCabecalho
+
+    Call BloquearPlanilha
+
 End Sub
 

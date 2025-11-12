@@ -11,6 +11,7 @@ Sub InserirLinha(Description As String, Valor As Single)
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
     Dim NewRow As Range
     
+
     Const desc As Integer = 2
     Const Qtde As Integer = 3
     Const Unit As Integer = 4
@@ -31,7 +32,9 @@ Sub InserirLinha(Description As String, Valor As Single)
     End With
 
     Call FormatarTabela
-    
+
+    Call FormatarTotais
+
     Call BloquearPlanilha
     
 End Sub
@@ -40,8 +43,8 @@ Sub ExportarPDF()
 
     Call DesbloquearPlanilha
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
+    Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
+    Dim Tbl As ListObject: Set Tbl = ThisWorkbook.ActiveSheet.ListObjects("OrcamentTbl")
     Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
 
     Dim cName As String
@@ -73,29 +76,37 @@ End Sub
 
 Sub BloquearPlanilha()
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
-    Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
-    Dim vChapas As ListObject: Set vChapas = ws.ListObjects("ValoresChapas")
-    Dim vAcess As ListObject: Set vAcess = ws.ListObjects("ValoresAcess")
-    Dim vGranito As ListObject: Set vGranito = ws.ListObjects("coresGranito")
-    Dim vCubas As ListObject: Set vCubas = ws.ListObjects("modelosCubas")
+    Application.ScreenUpdating = False
 
+    Dim mainWS As Worksheet: Set mainWS = Worksheets("ORÇAMENTO")
+    Dim Tbl As ListObject: Set Tbl = mainWS.ListObjects("OrcamentTbl")
 
-    ws.Unprotect Password:="a123a456"
+    Dim cadastroWS As Worksheet: Set cadastroWS = Worksheets("Cadastro")
+    Dim dadosCliente As ListObject: Set dadosCliente = cadastroWS.ListObjects("DadosOrcto")
+    Dim vChapas As ListObject: Set vChapas = cadastroWS.ListObjects("ValoresChapas")
+    Dim vAcess As ListObject: Set vAcess = cadastroWS.ListObjects("ValoresAcess")
+    Dim vGranito As ListObject: Set vGranito = cadastroWS.ListObjects("coresGranito")
+    Dim vCubas As ListObject: Set vCubas = cadastroWS.ListObjects("modelosCubas")
+
+    cadastroWS.Unprotect Password:="l123l456"
+    mainWS.Unprotect Password:="l123l456"
+
 
 
     ' tabela principal
     If Not Tbl.DataBodyRange Is Nothing Then
-        With Tbl.DataBodyRange
-            .Columns(2).Locked = False      ' coluna descrição
-            .Columns(3).Locked = False      ' coluna quantidade
-            .Columns(4).Locked = False      ' coluna valor unit
+        With Tbl
+            .DataBodyRange.Columns(1).Locked = True      ' coluna item
+            .DataBodyRange.Columns(2).Locked = False      ' coluna descricao
+            .DataBodyRange.Columns(3).Locked = False      ' coluna quantidade
+            .DataBodyRange.Columns(4).Locked = False      ' coluna valor unit
+            .DataBodyRange.Columns(5).Locked = True      ' coluna subtotal
+            .TotalsRowRange.Locked = True
         End With
     End If
 
     ' tabelas auxiliares
-    vAcess.DataBodyRange.Locked = False              ' valores dos acessórios
+    vAcess.DataBodyRange.Locked = False              ' valores dos acess?rios
     dadosCliente.DataBodyRange.Locked = False        ' dados do cliente/orçamento
     vChapas.DataBodyRange.Rows(1).Locked = False     ' valores das chapas
     vChapas.DataBodyRange.Cells(1, 1).Locked = True  ' texto "chapa"
@@ -103,17 +114,30 @@ Sub BloquearPlanilha()
     ' vCubas.HeaderRowRange.Locked = True
     ' vCubas.HeaderRowRange.Columns(1).Locked = True
     
+    If mainWS.Range("G1") = "a" Or mainWS.Range("G1") = "t" Then 
+        cadastroWS.Visible = xlSheetVisible
+    Else 
+        cadastroWS.Visible = xlSheetVeryHidden
+    End If
 
-    Range("G1").Locked = False              ' referência usada no if abaixo
+    mainWS.Range("G1").Locked = False              ' referencia usada no if abaixo
 
-    If Range("G1") <> "t" Then ws.Protect Password:="a123a456"
+    
+    If mainWS.Range("G1") <> "t" Then 
+        cadastroWS.Protect Password:="l123l456"
+        mainWS.Protect Password:="l123l456"
+    End If
+
+    Application.ScreenUpdating = True
     
 End Sub
 
 Sub DesbloquearPlanilha()
 
-    ActiveSheet.Unprotect Password:="a123a456"
-    ActiveSheet.Unprotect
+    Worksheets("Cadastro").Unprotect Password:="l123l456"
+    Worksheets("Cadastro").Unprotect
+    Worksheets("ORÇAMENTO").Unprotect Password:="l123l456"
+    Worksheets("ORÇAMENTO").Unprotect
 
 End Sub
 
@@ -137,15 +161,16 @@ End Sub
 
 Sub ExcluirLinha()
 
+    Application.ScreenUpdating = False
+
     Call DesbloquearPlanilha
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim ws As Worksheet: Set ws = Worksheets("ORÇAMENTO")
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
     Dim items As Variant
     Dim inputArray
     Dim i As Integer
 
-    Application.ScreenUpdating = False
     
     items = Application.InputBox("Qual(is) item(s) deseja excluir? (e.g., 3 ou 2-5)", "Excluir Linhas", Type:=2)
     If items = False Then
@@ -172,14 +197,13 @@ Sub ExcluirLinha()
     
     If Tbl.ListRows.Count = 0 Then Tbl.ListRows.Add
 
+    Call FormatarTabela
 
     Call FormatarTotais
 
-    Call FormatarTabela
+    Application.ScreenUpdating = True
 
     Call BloquearPlanilha
-
-    Application.ScreenUpdating = True
 
 End Sub
 
@@ -187,8 +211,8 @@ Sub NovoOrcamento()
 
     Call DesbloquearPlanilha
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
+    Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
+    Dim Tbl As ListObject: Set Tbl = ThisWorkbook.ActiveSheet.ListObjects("OrcamentTbl")
     Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
 
     Dim rowCount As Integer
@@ -216,7 +240,7 @@ End Sub
 
 Sub MoverMenu()
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
     Dim btns As Shape: Set btns = ws.Shapes("GrupoBtns")
 
     If Range("H2") = "" Then
@@ -231,7 +255,7 @@ End Sub
 
 Sub MostrarTabela(table As String)
     
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
     Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
     Dim valoresChapas As ListObject: Set valoresChapas = ws.ListObjects("ValoresChapas")
     Dim valoresAcess As ListObject: Set valoresAcess = ws.ListObjects("ValoresAcess")

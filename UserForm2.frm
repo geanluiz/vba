@@ -146,16 +146,12 @@ Private Sub btn_ok_Click()
 
 
     Unload Me
-
-    Call FormatarTabela
-    
-    Call FormatarTotais
     
 End Sub
 
 Private Sub UserForm_Initialize()
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("coresGranito")
     Dim cores
     Dim modelos

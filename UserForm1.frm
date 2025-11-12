@@ -109,6 +109,8 @@ End Sub
 
 Private Sub btn_ok_Click()
 
+    Application.ScreenUpdating = False
+
     Dim modelo As String
     Dim lSup As Single
     Dim lInf As Single
@@ -152,7 +154,6 @@ Private Sub btn_ok_Click()
     qtPInf = qtdePortas.Value
     cor = Text_cor.Value
     
-    Application.ScreenUpdating = False
 
     Valor = Application.Ceiling(vBanheiros(modelo, lSup, lInf, aSup, aInf, pSup, pInf, mold, qtPInf), 5)
 
@@ -160,10 +161,6 @@ Private Sub btn_ok_Click()
 
 
     Unload Me
-
-    Call FormatarTabela
-    
-    Call FormatarTotais
 
     
     Application.ScreenUpdating = True

@@ -82,8 +82,8 @@ End Function
 
 Sub FormatarCabecalho()
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
-    Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
+    Dim cadastroWS As Worksheet: Set cadastroWS = Worksheets("Cadastro")
+    Dim dadosCliente As ListObject: Set dadosCliente = cadastroWS.ListObjects("DadosOrcto")
     
     Dim cName As String
     Dim oDate As Variant
@@ -108,17 +108,15 @@ Sub FormatarCabecalho()
         dadosCliente.DataBodyRange.Columns(1).Value = UCase(cName)
     End If
 
-    Range("E3").Value = "CLIENTE: " & cName
-    Range("E4").Value = "DATA: " & oDate
-    Range("E5").Value = "ORÇAMENTO Nº " & oNum
+    Worksheets("ORÇAMENTO").Range("E3").Value = "CLIENTE: " & cName
+    Worksheets("ORÇAMENTO").Range("E4").Value = "DATA: " & oDate
+    Worksheets("ORÇAMENTO").Range("E5").Value = "ORÇAMENTO Nº " & oNum
     
 End Sub
 
 Sub FormatarTabela()
 
-    Call DesbloquearPlanilha
-
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim ws As Worksheet: Set ws = Worksheets("ORÇAMENTO")
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
     Dim i As Range
     Dim wordLimit As Integer
@@ -140,21 +138,16 @@ Sub FormatarTabela()
 
     Next
 
-
-    Call BloquearPlanilha
-
 End Sub
 
 Sub FormatarTotais()
-
-    Call DesbloquearPlanilha
     
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim ws As Worksheet: Set ws = Worksheets("ORÇAMENTO")
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
     Dim total1 As Range
     Dim total2 As Range
 
-    Set total1 = Tbl.TotalsRowRange.Range(Cells(2), Cells(4))
+    Set total1 = Tbl.TotalsRowRange.Cells(2, 4)
     Set total2 = Tbl.TotalsRowRange.Cells(5)
 
     With total1.Borders(xlEdgeLeft)
@@ -171,8 +164,5 @@ Sub FormatarTotais()
     total1.Font.Bold = True
     total2.Font.Bold = True
     total1.HorizontalAlignment = xlCenter
-
-
-    Call BloquearPlanilha
 
 End Sub

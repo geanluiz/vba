@@ -48,7 +48,7 @@ Dim cuba As String
 'valor dos materiais
 Function vMaterial(material) As Single
     
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
     Dim vChapas As ListObject: Set vChapas = ws.ListObjects("ValoresChapas")
     Dim vAcess As ListObject: Set vAcess = ws.ListObjects("ValoresAcess")
     Dim vGranito As ListObject: Set vGranito = ws.ListObjects("coresGranito")
@@ -102,7 +102,7 @@ Function acrescTabela() As Single
     
     Const stepTabela As Single = 0.1 / 5    ' 5 níveis(tabelas) com máximo de 10%
 
-    Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
+    Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
     Dim dadosCliente As ListObject: Set dadosCliente = ws.ListObjects("DadosOrcto")
     Dim prev As Single
 
