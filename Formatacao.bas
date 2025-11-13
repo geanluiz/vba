@@ -82,6 +82,8 @@ End Function
 
 Sub FormatarCabecalho()
 
+    Application.ScreenUpdating = False
+
     Dim cadastroWS As Worksheet: Set cadastroWS = Worksheets("Cadastro")
     Dim dadosCliente As ListObject: Set dadosCliente = cadastroWS.ListObjects("DadosOrcto")
     
@@ -108,9 +110,11 @@ Sub FormatarCabecalho()
         dadosCliente.DataBodyRange.Columns(1).Value = UCase(cName)
     End If
 
-    Worksheets("ORÇAMENTO").Range("E3").Value = "CLIENTE: " & cName
-    Worksheets("ORÇAMENTO").Range("E4").Value = "DATA: " & oDate
-    Worksheets("ORÇAMENTO").Range("E5").Value = "ORÇAMENTO Nº " & oNum
+    Worksheets("ORÇAMENTO").Range("E3").MergeArea.Value = "CLIENTE: " & cName
+    Worksheets("ORÇAMENTO").Range("E4").MergeArea.Value = "DATA: " & oDate
+    Worksheets("ORÇAMENTO").Range("E5").MergeArea.Value = "ORÇAMENTO Nº " & oNum
+    
+    Application.ScreenUpdating = True
     
 End Sub
 

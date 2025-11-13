@@ -56,11 +56,14 @@ Private Sub btn_cancel_Click()
 End Sub
 
 Private Sub Btn_Save_Click()
+
+    Application.ScreenUpdating = False
+    Application.EnableEvents = False
     
     Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
     Dim dadosOrcto As ListObject: Set dadosOrcto = ws.ListObjects("DadosOrcto")
     
-    Call DesbloquearPlanilha
+    If ActiveSheet.ProtectContents Then Call DesbloquearPlanilha
 
     dadosOrcto.DataBodyRange.Cells(1, 1) = Txt_Cliente.Value
     dadosOrcto.DataBodyRange.Cells(1, 2) = Format(Txt_Data.Text, "mm/dd/yyyy")
@@ -71,7 +74,9 @@ Private Sub Btn_Save_Click()
 
     Call FormatarCabecalho
 
-    Call BloquearPlanilha
+    If Not ActiveSheet.ProtectContents Then Call BloquearPlanilha
+    Application.EnableEvents = True
+    Application.ScreenUpdating = True
 
 End Sub
 

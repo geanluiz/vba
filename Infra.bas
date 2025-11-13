@@ -5,7 +5,8 @@ Dim current As String
 
 Sub InserirLinha(Description As String, Valor As Single)
 
-    Call DesbloquearPlanilha
+    If ActiveSheet.ProtectContents Then Call DesbloquearPlanilha
+    Application.EnableEvents = False
 
     Dim ws As Worksheet: Set ws = ThisWorkbook.ActiveSheet
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
@@ -35,7 +36,8 @@ Sub InserirLinha(Description As String, Valor As Single)
 
     Call FormatarTotais
 
-    Call BloquearPlanilha
+    If Not ActiveSheet.ProtectContents Then Call BloquearPlanilha
+    Application.EnableEvents = True
     
 End Sub
 
@@ -92,6 +94,9 @@ Sub BloquearPlanilha()
     mainWS.Unprotect Password:="l123l456"
 
 
+    mainWS.Range("E3").MergeArea.Locked = True
+    mainWS.Range("E4").MergeArea.Locked = True
+    mainWS.Range("E5").MergeArea.Locked = True
 
     ' tabela principal
     If Not Tbl.DataBodyRange Is Nothing Then
@@ -106,8 +111,8 @@ Sub BloquearPlanilha()
     End If
 
     ' tabelas auxiliares
-    vAcess.DataBodyRange.Locked = False              ' valores dos acess?rios
-    dadosCliente.DataBodyRange.Locked = False        ' dados do cliente/orçamento
+    vAcess.HeaderRowRange.Locked = True              ' valores dos acessorios
+    dadosCliente.HeaderRowRange.Locked = True        ' dados do cliente/orcamento
     vChapas.DataBodyRange.Rows(1).Locked = False     ' valores das chapas
     vChapas.DataBodyRange.Cells(1, 1).Locked = True  ' texto "chapa"
     vGranito.DataBodyRange.Columns(1).Locked = True
@@ -134,10 +139,12 @@ End Sub
 
 Sub DesbloquearPlanilha()
 
-    Worksheets("Cadastro").Unprotect Password:="l123l456"
-    Worksheets("Cadastro").Unprotect
-    Worksheets("ORÇAMENTO").Unprotect Password:="l123l456"
-    Worksheets("ORÇAMENTO").Unprotect
+    If ActiveSheet.ProtectContents Then 
+        Worksheets("Cadastro").Unprotect Password:="l123l456"
+        Worksheets("Cadastro").Unprotect
+        Worksheets("ORÇAMENTO").Unprotect Password:="l123l456"
+        Worksheets("ORÇAMENTO").Unprotect
+    End If
 
 End Sub
 
@@ -161,15 +168,16 @@ End Sub
 
 Sub ExcluirLinha()
 
-    Application.ScreenUpdating = False
-
-    Call DesbloquearPlanilha
-
     Dim ws As Worksheet: Set ws = Worksheets("ORÇAMENTO")
     Dim Tbl As ListObject: Set Tbl = ws.ListObjects("OrcamentTbl")
     Dim items As Variant
     Dim inputArray
     Dim i As Integer
+
+    Application.ScreenUpdating = False
+    Application.EnableEvents = False
+
+    Call DesbloquearPlanilha
 
     
     items = Application.InputBox("Qual(is) item(s) deseja excluir? (e.g., 3 ou 2-5)", "Excluir Linhas", Type:=2)
@@ -202,6 +210,7 @@ Sub ExcluirLinha()
     Call FormatarTotais
 
     Application.ScreenUpdating = True
+    Application.EnableEvents = True
 
     Call BloquearPlanilha
 
@@ -209,7 +218,8 @@ End Sub
 
 Sub NovoOrcamento()
 
-    Call DesbloquearPlanilha
+    If ActiveSheet.ProtectContents Then Call DesbloquearPlanilha
+    Application.EnableEvents = False
 
     Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
     Dim Tbl As ListObject: Set Tbl = ThisWorkbook.ActiveSheet.ListObjects("OrcamentTbl")
@@ -234,7 +244,8 @@ Sub NovoOrcamento()
     Call FormatarTotais
     Call FormatarCabecalho
 
-    Call BloquearPlanilha
+    If Not ActiveSheet.ProtectContents Then Call BloquearPlanilha
+    Application.EnableEvents = True
 
 End Sub
 
