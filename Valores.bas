@@ -2,10 +2,6 @@ Attribute VB_Name = "Valores"
 Option Explicit
 
 'parametros das funcoes
-Dim material As Variant
-
-Dim multi As String
-
 Dim sLarg As Single
 Dim sAlt As Single
 Dim sProf As Single
@@ -17,22 +13,10 @@ Dim iAlt As Single
 Dim iProf As Single
 Dim qtLatI As Integer
 Dim qtRipaF As Integer
-
-Dim largPS As Single
-
-Dim largPI As Single
-Dim moldRpdAplqPI As String
-
-Dim largG As Single
+Dim moldRpdAplq As String
 Dim profG As Single
 
 Dim modelo As String
-Dim largS As Single
-Dim largI As Single
-Dim altS As Single
-Dim altI As Single
-Dim profS As Single
-Dim profI As Single
 Dim mold As String
 Dim qtPInf As Integer
 
@@ -46,7 +30,7 @@ Dim cuba As String
 
 
 'valor dos materiais
-Function vMaterial(material) As Single
+Function vMaterial(material As Variant) As Single
     
     Dim ws As Worksheet: Set ws = Worksheets("Cadastro")
     Dim vChapas As ListObject: Set vChapas = ws.ListObjects("ValoresChapas")
@@ -81,7 +65,7 @@ Function vMaterial(material) As Single
 End Function
 
 'retorna o markup conforme tipo de material
-Function markup(multi) As Single
+Function markup(multi As Integer) As Single
 
     Const MKP As Integer = 3
 
@@ -221,7 +205,7 @@ Function vCxInf(iLarg, iAlt, iProf, qtLatI, qtRipaF) As Single
 End Function
 
 'valor das portas superiores
-Function vPortaSup(largPS) As Single
+Function vPortaSup(largPS As Single) As Single
     
     'variaveis
     Const ALTP As Single = 0.69
@@ -265,7 +249,7 @@ Function vPortaSup(largPS) As Single
 End Function
 
 'valor das portas inferiores
-Function vPortaInf(largPI, moldRpdAplqPI) As Single
+Function vPortaInf(largPI As Single, moldRpdAplq) As Single
     
     'variaveis
     Const ALTP As Single = 0.58
@@ -291,15 +275,15 @@ Function vPortaInf(largPI, moldRpdAplqPI) As Single
     baseP = largPI * ALTP
     m2Aplq = (largPI - 0.17) * (ALTP - 0.17)
 
-    If moldRpdAplqPI = "mold" Then
+    If moldRpdAplq = "mold" Then
         molduraP = (largPI + ALTP) * 2 * LRIPA
         rpd = 0
         aplq = 0
-    ElseIf moldRpdAplqPI = "rpd" Then
+    ElseIf moldRpdAplq = "rpd" Then
         rpd = Round((largPI / 0.03), 0) * ALTP * 0.015
         molduraP = 0
         aplq = 0
-    ElseIf moldRpdAplqPI = "aplq" Then
+    ElseIf moldRpdAplq = "aplq" Then
         rpd = 0
         molduraP = (largPI + ALTP) * 2 * LRIPA
         aplq = m2Aplq
@@ -329,7 +313,7 @@ Function vPortaInf(largPI, moldRpdAplqPI) As Single
 End Function
 
 'valor da gaveta
-Function vGaveta(largG, moldRpdAplq, profG) As Single
+Function vGaveta(largG As Single, moldRpdAplq, profG) As Single
     
     'variaveis
     Const ALTG As Single = 0.2
@@ -409,7 +393,7 @@ Function vGaveta(largG, moldRpdAplq, profG) As Single
 End Function
     
 'retorna valor total dos banheiros
-Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold, qtPInf) As Single
+Function vBanheiros(modelo, sLarg, iLarg, sAlt, iAlt, sProf, iProf, mold, qtPInf) As Single
 
     Const largP1Sup As Single = 0.48
     Const largP1Inf As Single = 0.33
@@ -434,21 +418,21 @@ Function vBanheiros(modelo, largS, largI, altS, altI, profS, profI, mold, qtPInf
         Case "Azul":
             qtLatSup = 4: qtRipaSup = 2
             qtLatInf = 3: qtRipaInf = 2: qtGaveta = 1
-            If largI < 0.6 Then qtPInf = 1
+            If iLarg < 0.6 Then qtPInf = 1
         Case "Cinza":
             qtLatSup = 3: qtRipaSup = 0
             qtLatInf = 2: qtRipaInf = 0: qtGaveta = 0
     End Select
 
-    totalBanheiros = (vCxSup(largS, altS, profS, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup) + _
-        vCxInf(largI, altI, profI, qtLatInf, qtRipaInf) + (vPortaInf(largP1Inf, mold) * qtPInf) + _
-        (vGaveta(largP1Inf, mold, profI) * qtGaveta)) 
+    totalBanheiros = (vCxSup(sLarg, sAlt, sProf, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup) + _
+        vCxInf(iLarg, iAlt, iProf, qtLatInf, qtRipaInf) + (vPortaInf(largP1Inf, mold) * qtPInf) + _
+        (vGaveta(largP1Inf, mold, iProf) * qtGaveta)) 
 
     vBanheiros = (totalBanheiros * (1 + acrescCartao())) * (1 + acrescTabela())
 
 End Function
 
-Function vNicho(largN, altN, profN) As Single
+Function vNicho(largN As Single, altN As Single, profN As Single) As Single
 
     Dim m2Nicho As Single
     Dim latsN As Single
