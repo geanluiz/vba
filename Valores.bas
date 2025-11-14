@@ -15,6 +15,7 @@ Dim qtLatI As Integer
 Dim qtRipaF As Integer
 Dim moldRpdAplq As String
 Dim profG As Single
+Dim InfOuSup As String
 
 Dim modelo As String
 Dim mold As String
@@ -393,7 +394,7 @@ Function vGaveta(largG As Single, moldRpdAplq, profG) As Single
 End Function
     
 'retorna valor total dos banheiros
-Function vBanheiros(modelo, sLarg, iLarg, sAlt, iAlt, sProf, iProf, mold, qtPInf) As Single
+Function vBanheiros(modelo, sLarg, iLarg, sAlt, iAlt, sProf, iProf, mold, qtPInf, InfOuSup) As Single
 
     Const largP1Sup As Single = 0.48
     Const largP1Inf As Single = 0.33
@@ -424,10 +425,18 @@ Function vBanheiros(modelo, sLarg, iLarg, sAlt, iAlt, sProf, iProf, mold, qtPInf
             qtLatInf = 2: qtRipaInf = 0: qtGaveta = 0
     End Select
 
-    totalBanheiros = (vCxSup(sLarg, sAlt, sProf, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup) + _
-        vCxInf(iLarg, iAlt, iProf, qtLatInf, qtRipaInf) + (vPortaInf(largP1Inf, mold) * qtPInf) + _
-        (vGaveta(largP1Inf, mold, iProf) * qtGaveta)) 
-
+    Select Case InfOuSup
+        Case "Inf":
+            totalBanheiros = vCxInf(iLarg, iAlt, iProf, qtLatInf, qtRipaInf) + (vPortaInf(largP1Inf, mold) * qtPInf) + _
+                (vGaveta(largP1Inf, mold, iProf) * qtGaveta)
+        Case "Sup":
+            totalBanheiros = vCxSup(sLarg, sAlt, sProf, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup)
+        Case "Todos":
+            totalBanheiros = vCxSup(sLarg, sAlt, sProf, qtLatSup, qtRipaSup) + vPortaSup(largP1Sup) + _
+                vCxInf(iLarg, iAlt, iProf, qtLatInf, qtRipaInf) + (vPortaInf(largP1Inf, mold) * qtPInf) + _
+                (vGaveta(largP1Inf, mold, iProf) * qtGaveta)
+    End Select
+    
     vBanheiros = (totalBanheiros * (1 + acrescCartao())) * (1 + acrescTabela())
 
 End Function

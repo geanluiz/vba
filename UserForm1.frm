@@ -122,6 +122,7 @@ Private Sub btn_ok_Click()
     Dim Valor As Single
     Dim cor As String
     Dim qtPInf As Integer
+    Dim InfOuSup As String
 
     modelo = ComboBox_modelo.Value
 
@@ -153,11 +154,20 @@ Private Sub btn_ok_Click()
 
     qtPInf = qtdePortas.Value
     cor = Text_cor.Value
-    
 
-    Valor = Application.Ceiling(vBanheiros(modelo, lSup, lInf, aSup, aInf, pSup, pInf, mold, qtPInf), 5)
 
-    Call InserirLinha(desc_text(lSup, lInf, aSup, aInf, pSup, pInf, cor, mold, qtPInf), Valor)
+    If Btn_so_inf.Value Then
+        InfOuSup = "Inf"
+    ElseIf Btn_so_sup.Value Then
+        InfOuSup = "Sup"
+    Else
+        InfOuSup = "Todos"
+    End If
+
+
+    Valor = Application.Ceiling(vBanheiros(modelo, lSup, lInf, aSup, aInf, pSup, pInf, mold, qtPInf, InfOuSup), 5)
+
+    Call InserirLinha(desc_text(lSup, lInf, aSup, aInf, pSup, pInf, cor, mold, qtPInf, InfOuSup), Valor)
 
 
     Unload Me

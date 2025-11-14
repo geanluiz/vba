@@ -19,8 +19,9 @@ Dim largT As Single
 Dim profT As Single
 Dim cuba As Integer
 Dim medRod As Single
+Dim InfOuSup As String
 
-Function desc_text(largS, largI, altS, altI, profS, profI, cor, moldRpdAplq, qtPInf) As String
+Function desc_text(largS, largI, altS, altI, profS, profI, cor, moldRpdAplq, qtPInf, InfOuSup) As String
 
     If moldRpdAplq = "mold" Then
         mold = " com moldura"
@@ -41,13 +42,24 @@ Function desc_text(largS, largI, altS, altI, profS, profI, cor, moldRpdAplq, qtP
         trechoPortas = "com 1 porta"
     End If
 
-
-    desc_text = _
-    "BANHEIRO: Armário suspenso a prova dagua pintado na cor " & _
-    cor & " med. " & medSup & "cm com 1 porta, molduras, espelho e" & _
-    " ferragens em inox e; Balcão a prova dagua pintado na cor " & _
-    cor & " med. " & medInf & "cm " & trechoPortas & _
-    mold & " e ferragens em inox."
+    If InfOuSup = "Inf" Then
+        desc_text = _
+            "BANHEIRO: Balcão a prova dagua pintado na cor " & _
+            cor & " med. " & medInf & "cm " & trechoPortas & _
+            mold & " e ferragens em inox."
+    ElseIf InfOuSup = "Sup" Then
+        desc_text = _
+            "BANHEIRO: Armário suspenso a prova dagua pintado na cor " & _
+            cor & " med. " & medSup & "cm com 1 porta, molduras, espelho e" & _
+            " ferragens em inox."
+    Else
+        desc_text = _
+            "BANHEIRO: Armário suspenso a prova dagua pintado na cor " & _
+            cor & " med. " & medSup & "cm com 1 porta, molduras, espelho e" & _
+            " ferragens em inox e; Balcão a prova dagua pintado na cor " & _
+            cor & " med. " & medInf & "cm " & trechoPortas & _
+            mold & " e ferragens em inox."
+    End If
 
 End Function
 
